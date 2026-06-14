@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FIFA World Cup 2026 Live Analytical Hub & Match Telemetry Dashboard</title>
+    <meta name="description" content="Experience real-time FIFA World Cup 2026 match telemetry, live score commentary updates, AI-powered tactical matchup insights, and dynamic team power rankings." />
+    <script>
+      (function() {
+        try {
+          var target = typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : {};
+          if (target && target.fetch) {
+            var desc = Object.getOwnPropertyDescriptor(target, 'fetch');
+            if (desc) {
+              var isReadOnly = (desc.writable === false) || (desc.get !== undefined && desc.set === undefined);
+              if (isReadOnly && desc.configurable !== false) {
+                var currentFetch = target.fetch;
+                Object.defineProperty(target, 'fetch', {
+                  get: function() {
+                    return currentFetch;
+                  },
+                  set: function(val) {
+                    console.warn("Intercepted fetch reassignment to prevent crash:", val);
+                    currentFetch = val;
+                  },
+                  configurable: true,
+                  enumerable: true
+                });
+              }
+            }
+          }
+        } catch (e) {
+          console.warn("Failsafe fetch patch skipped:", e);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
