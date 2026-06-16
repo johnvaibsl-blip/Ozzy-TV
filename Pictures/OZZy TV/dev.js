@@ -52,6 +52,8 @@ const server = http.createServer(async (req, res) => {
                 m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/channels.m3u';
             } else if (server === '4') {
                 m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/fifa-worldcup.m3u';
+            } else if (server === '5') {
+                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/bdix.m3u';
             } else {
                 m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/world-cup-sports.m3u';
             }

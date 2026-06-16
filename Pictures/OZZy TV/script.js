@@ -22,6 +22,12 @@ const SERVERS = {
         sources: [
             "/fifa-worldcup.m3u"
         ]
+    },
+    "Server 5": {
+        label: "BDIX",
+        sources: [
+            "/bdix.m3u"
+        ]
     }
 };
 
@@ -69,6 +75,7 @@ function switchServer(key) {
     document.getElementById("srv2btn").classList.toggle("active", key === "Server 2");
     document.getElementById("srv3btn").classList.toggle("active", key === "Server 3");
     document.getElementById("srv4btn").classList.toggle("active", key === "Server 4");
+    document.getElementById("srv5btn").classList.toggle("active", key === "Server 5");
     filterChannels(activeCat);
 }
 
