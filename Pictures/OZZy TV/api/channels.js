@@ -25,13 +25,13 @@ module.exports = async (req, res) => {
             if (server === '2') {
                 m3uUrl = 'https://raw.githubusercontent.com/sanjoykb/-KB-TV-Playlist/refs/heads/main/Github%20Auto%20Update%20Channel.m3u';
             } else if (server === '3') {
-                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/channels.m3u';
+                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/master/Pictures/OZZy%20TV/channels.m3u';
             } else if (server === '4') {
-                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/fifa-worldcup.m3u';
+                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/master/Pictures/OZZy%20TV/fifa-worldcup.m3u';
             } else if (server === '5') {
-                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/bdix.m3u';
+                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/master/Pictures/OZZy%20TV/bdix.m3u';
             } else {
-                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/world-cup-sports.m3u';
+                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/master/Pictures/OZZy%20TV/world-cup-sports.m3u';
             }
         const text = await fetchUrl(m3uUrl);
         const channels = parseM3U(text);
@@ -86,7 +86,7 @@ function parseM3U(text) {
                 logo: logoM ? logoM[1] : '',
                 cats
             };
-        } else if (line.startsWith('http') && info && line.startsWith('https')) {
+        } else if (line.startsWith('http') && info) {
             const dup = channels.find(c => c.url === line);
             if (!dup) {
                 channels.push({ ...info, url: line });

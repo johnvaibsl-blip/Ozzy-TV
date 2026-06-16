@@ -49,13 +49,13 @@ const server = http.createServer(async (req, res) => {
             if (server === '2') {
                 m3uUrl = 'https://raw.githubusercontent.com/sanjoykb/-KB-TV-Playlist/refs/heads/main/Github%20Auto%20Update%20Channel.m3u';
             } else if (server === '3') {
-                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/channels.m3u';
+                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/master/Pictures/OZZy%20TV/channels.m3u';
             } else if (server === '4') {
-                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/fifa-worldcup.m3u';
+                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/master/Pictures/OZZy%20TV/fifa-worldcup.m3u';
             } else if (server === '5') {
-                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/bdix.m3u';
+                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/master/Pictures/OZZy%20TV/bdix.m3u';
             } else {
-                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/world-cup-sports.m3u';
+                m3uUrl = 'https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/master/Pictures/OZZy%20TV/world-cup-sports.m3u';
             }
             const m3u = await fetchUrl(m3uUrl);
             res.writeHead(200, { 'Content-Type': 'application/x-mpegurl; charset=utf-8' });
