@@ -16,6 +16,13 @@
       "dest": "/api/$1"
     },
     {
+      "src": "/(.+\\.m3u8?)$",
+      "dest": "/$1",
+      "headers": {
+        "Content-Type": "application/x-mpegURL"
+      }
+    },
+    {
       "src": "/(.*)",
       "dest": "/$1"
     }
