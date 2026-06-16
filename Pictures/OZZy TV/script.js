@@ -3,10 +3,7 @@ const SERVERS = {
         label: "BDIX 1",
         sources: []
     },
-    "BDIX 2": {
-        label: "BDIX 2",
-        sources: []
-    },
+
     "Server 1": {
         label: "World Cup Sports",
         sources: [
@@ -612,9 +609,7 @@ https://sm-monirul.top/toffee/play/and_tv_hd.m3u8
 #EXTINF:-1 ,& Pictures HD
 https://sm-monirul.top/toffee/play/andpicture_hd.m3u8
 #EXTINF:-1 ,0. Toon Goggles
-https://d1eg24xrsfr6kv.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-b4b1bzxkt1uzo-prod/tg/tg/tg.m3u8`;
-
-const DSAT_M3U_RAW = `#EXTM3U
+https://d1eg24xrsfr6kv.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-b4b1bzxkt1uzo-prod/tg/tg/tg.m3u8
 #EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live
 http://103.89.248.26:8082/1LIVE/index.m3u8?token=8f1020ea7e3e23c535c260d80a69f80fd922a1a9-78b0874a25b1e24059743b090582d9f6-1781649462-1781638662&remote=no_check_ip
 #EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live 2
@@ -742,7 +737,6 @@ function switchServer(key) {
     document.getElementById("srv3btn").classList.toggle("active", key === "Server 3");
     document.getElementById("srv4btn").classList.toggle("active", key === "Server 4");
     document.getElementById("srv5btn").classList.toggle("active", key === "BDIX 1");
-    document.getElementById("srv6btn").classList.toggle("active", key === "BDIX 2");
     filterChannels(activeCat);
 }
 
@@ -772,7 +766,6 @@ async function fetchChannels() {
     }
 
     parseM3U(BDIX_M3U_RAW, "BDIX 1");
-    parseM3U(DSAT_M3U_RAW, "BDIX 2");
 
     ASIMX_CHANNELS.forEach(ch => {
         if (ch.url.startsWith("https")) {
