@@ -29,7 +29,7 @@ const SERVERS = {
     },
     "Server 6": {
         label: "Updated",
-        sources: ["/api/dsat"]
+        sources: ["/dsat.m3u"]
     }
 };
 

@@ -1,0 +1,87 @@
+#EXTM3U
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live
+http://103.89.248.26:8082/1LIVE/index.m3u8?token=8f1020ea7e3e23c535c260d80a69f80fd922a1a9-78b0874a25b1e24059743b090582d9f6-1781649462-1781638662&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live 2
+http://103.89.248.30:8082/FIFA-World-Cup-Live/index.m3u8?token=d1a23a6e7ce3dc31b02ddf6c2ecbc21dbfbb6bbd-fa3d116d1e586ca58214c56d83f4e568-1781649308-1781638508&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live 3
+http://103.89.248.22:8082/FIFA-World-Cup-Live-1/index.m3u8?token=1a457afc10f32b6b5e3c382f8ea374055d79fc5f-7d50ea18074a2620013f0ed3bdda3313-1781649432-1781638632&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live 4
+http://103.89.248.10:8082/FIFA-World-Cup-Live-2/index.m3u8?token=1372198d6a828273f0f11d791c459ff4789e6227-7c556a1dd971a6df1c5cce56d40adbc4-1781649919-1781639119&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live 5
+http://103.89.248.14:8082/FIFA-World-Cup-Live-3/index.m3u8?token=132aeca1e1a1206025fa46f7f422ec9dbe5c0d20-da2e2ecb5bd2d22aef3771e29e0ff1cb-1781649224-1781638424&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live 6
+http://103.89.248.58:8082/FIFA-World-Cup-Live-4/index.m3u8?token=fab5756cc546f3039628a97451aa5071b29aa36b-af1ed06e48793880acf36c4076a3017b-1781649242-1781638442&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live 7
+http://103.89.248.26:8082/FIFA-World-Cup-Live-5/index.m3u8?token=224e28f545c413eb1a5db082cfb64745b2878f90-670695cd12a36541e8240e40f6f8e1a7-1781649462-1781638662&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live 8
+http://103.89.248.50:8082/FIFA-World-Cup-Live-6/index.m3u8?token=c74381c2f30d35e5993ddf51b21140f1716adca0-f2e4686107a9864c8db47d7fe8a47a64-1781649241-1781638441&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live 9
+http://103.89.248.22:8082/FIFA-World-Cup-Live-7/index.m3u8?token=194730c1b97a79bb78317a07c6c1b979d3bb9c89-e5b8ec51926bc258f380e1cb0ba68a8a-1781649432-1781638632&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live 10
+http://103.89.248.58:8082/FIFA-World-Cup-Live-8/index.m3u8?token=a2b04101af3ef08c8a836916a68ee8de843c8523-5200de861e7d9aa41ba553cd8013a880-1781649242-1781638442&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/FIFA-2026.jpg" group-title="Live Sports",FIFA World Cup Live 11
+http://103.89.248.30:8082/FIFA-World-Cup-Live-9/index.m3u8?token=138201e106872cf9faf05795790353a797ddcb1d-61acc6e8d02aed86e88161ec35d5bf11-1781649308-1781638508&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/Live2.jpeg" group-title="Live Sports",Live 2
+http://103.89.248.10:8082/2LIVE/index.m3u8?token=422ab311e0342dc6ad3445d52112241850bb9a33-c129178743d46fc4e21a1b3de34071df-1781649919-1781639119&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/LIVE-CRICKET.jpg" group-title="Live Sports",Live Cricket
+http://103.89.248.14:8082/LIVE-CRICKET/index.m3u8?token=97e5e1c919743f22ddfb757846c8507879245e01-774640780ad147b259637b6b2d687b90-1781649224-1781638424&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/LIVE-CRICKET.jpg" group-title="Live Sports",Live Cricket 2
+http://103.89.248.26:8082/LIVE-CRICKET-1/index.m3u8?token=58909108108255c94578c8737de1c90e2abc9049-02fc7f1775d18aefe538fa1edc3065ba-1781649462-1781638662&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/LIVE-FOOTBALL.jpg" group-title="Live Sports",Live Football
+http://103.89.248.50:8082/LIVE-FOOTBALL/index.m3u8?token=3689f35e3db3e3d9c2cea2ecb40c5c6493a00a5e-b5ac4c8dcbe0241580167722d479b286-1781649241-1781638441&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/LIVE-FOOTBALL.jpg" group-title="Live Sports",Live Football 2
+http://103.89.248.30:8082/LIVE-FOOTBALL-1/index.m3u8?token=b34e7cc07f73787c9ed218c1f7a7223d8cfc7481-1db3eede980c6b158ea558bd8721dde7-1781649308-1781638508&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/LIVE-FOOTBALL.jpg" group-title="Live Sports",Live Football 3
+http://103.89.248.14:8082/LIVE-FOOTBALL-2/index.m3u8?token=61a378a2c7033c516c06b65b0f724c0623c228d5-7abfe423056e536444b5c4a52406540b-1781649224-1781638424&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/starsports1.jpg" group-title="Sports",Star Sports 1
+http://103.89.248.22:8082/STAR-SPORTS-1/index.m3u8?token=8df80a2b05d964deab69b39e7a6d4c86a8273593-2b9148c758f5ade60e66ad25efc318df-1781649432-1781638632&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/starsports2.jpg" group-title="Sports",Star Sports 2
+http://103.89.248.10:8082/STAR-SPORTS-2/index.m3u8?token=6e22e5917929f2e7f15776de8ff9582770b26138-c3adf6c0f724d5dad5d011f5ad65db63-1781649919-1781639119&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/ptvsports.jpg" group-title="Sports",PTV Sports
+http://103.89.248.58:8082/PTV/index.m3u8?token=7123023d944bef98cfd921237e73ec88d278eb09-6eefee4783dcbeea082b16b13b13d811-1781649242-1781638442&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/bein1.jpg" group-title="Sports",BeIN Sports 1
+http://103.89.248.50:8082/Bein-hd/index.m3u8?token=4bd5eb68debf024c8049028ac56169e02dd5e79c-b4424377ecd670ce6c80e0f0ec9adef4-1781649241-1781638441&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/espnhd.jpg" group-title="Sports",ESPN
+http://103.89.248.26:8082/ESPN-1/index.m3u8?token=ed8180c6a470d8e726e2a4096d29bbac7ae687cb-1b49073993989b4eb752742b59518def-1781649462-1781638662&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/tntsports1.jpeg" group-title="Sports",TNT Sports 1
+http://103.89.248.14:8082/TNT-Sports-1/index.m3u8?token=1ff81842049217284ed1153090828e35cf3f8f24-6349fee59cce1e030190a42709a25472-1781649224-1781638424&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/tntsports2.jpeg" group-title="Sports",TNT Sports 2
+http://103.89.248.30:8082/TNT-Sports-2/index.m3u8?token=87244b9bceb75131896bd179da1d7b695aec989f-6c0a197e3cb6cb44cb627c7c8b794bfe-1781649308-1781638508&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/tntsports3.jpeg" group-title="Sports",TNT Sports 3
+http://103.89.248.10:8082/TNT-Sports-3/index.m3u8?token=15310f91b7cda8c72ef3a24b908452b266b7a69f-d540edc43b8211bab7366bdc4e5c0b36-1781649919-1781639119&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/fox.jpg" group-title="Sports",Fox Sports
+http://103.89.248.22:8082/FOX-SPORTS/index.m3u8?token=b59a21934fd8db021fdec49354376f07f004a636-ec55d9be375a08cf832344f9dc8598bf-1781649432-1781638632&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/skymainevent.jpg" group-title="Sports",Sky Sports Main Event
+http://103.89.248.26:8082/Sky-Sports-Main-Event/index.m3u8?token=176e72f58ae7bba8069cb1467fb26600e6fb37fc-b5ec6e5d1bc41e3494077da38ed70bba-1781649462-1781638662&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/sonyten-1.png" group-title="Sports",Sony TEN 1
+http://103.89.248.58:8082/Sony-TEN-1/index.m3u8?token=d2810d65f8f23b54b3cc43b791964f73fa68e533-688ad9c008dd07d9cb03f17b28db7d49-1781649242-1781638442&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/a-sports.jpg" group-title="Sports",A Sports
+http://103.89.248.50:8082/A-SPORTS/index.m3u8?token=34b58689d3476e1b10266907a0f54911a4a44f94-f739356e27ba64b2db08dbff5e53048f-1781649241-1781638441&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/willowhd.jpg" group-title="Sports",Willow Cricket
+http://103.89.248.22:8082/willow/index.m3u8?token=e91893029245b40712fbcf4b97c2275968934146-408ac3f09f25b363a9a9b62730dd7036-1781649432-1781638632&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/bbcnews.jpg" group-title="News",BBC News
+http://103.89.248.14:8082/BBC-NEWS/index.m3u8?token=28b3b9da2accdfb432cc542a1828aca35bf4ba05-2b14e979dd53866b9bd58ee454db8b7c-1781649224-1781638424&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/cnnnews.jpg" group-title="News",CNN
+http://103.89.248.30:8082/CNN/index.m3u8?token=9a8542602259398d8df1320e5d6a43d6240458bc-3fce7c783d6eaa61ecde6ac7fbd80704-1781649308-1781638508&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/starjalsha.jpg" group-title="Bangla",Star Jalsha
+http://103.89.248.10:8082/Star_jalsha/index.m3u8?token=f183581b1d4dbb5d1dbc68e2a8a7a361320dfd80-d4ddda9d4a8985473896f285735d8d6c-1781649919-1781639119&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/zeebanglahd.jpg" group-title="Bangla",Zee Bangla
+http://103.89.248.58:8082/zee-bangla/index.m3u8?token=8ee7f3e4b474ee2a33102b24e7485e9abd46d74a-676e041063c4ad4da5313c3f3c85a099-1781649242-1781638442&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/starplushd.jpg" group-title="Hindi",Star Plus
+http://103.89.248.26:8082/STAR-PLUS/index.m3u8?token=109a57e917d1d37c4410e4ca287e2dad30ba3290-00cab891e3475d8569c86de9724816d2-1781649462-1781638662&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/sonytv.jpg" group-title="Hindi",Sony TV
+http://103.89.248.50:8082/SONY-TV/index.m3u8?token=e061ed6290c890c5136e11060a8bd7c149f4886d-69d17a1782d1356ceadf4bfc20294b39-1781649241-1781638441&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/colorshd.jpg" group-title="Hindi",Colors HD
+http://103.89.248.30:8082/Colors-HD/index.m3u8?token=869ed571244a39eef40b8cfdea85a43577e83ce1-9fffda92cf69f54332c3a661a51e5f58-1781649308-1781638508&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/hbohd.jpg" group-title="Movies",HBO
+http://103.89.248.10:8082/HBO/index.m3u8?token=14d60c5c7f977ee146a9915fbb69e7b9c741e19d-4896a65fbcaf70290ee4e0c7f211b9e1-1781649919-1781639119&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/zee cinema.jpeg" group-title="Movies",Zee Cinema HD
+http://103.89.248.22:8082/Zee-Cinema-HD/index.m3u8?token=0bae1367fc5df9690b9691ab330f8272b6190490-b82d5074d5269e30cf3cbb234fcd2ee5-1781649432-1781638632&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/sonymaxhd.jpg" group-title="Movies",Sony Max
+http://103.89.248.14:8082/SONY-MAX/index.m3u8?token=cb6aca8e6c3c29c1a5ac09114ce3a1739fcdf812-430ad6a23cbc9e9437abb0d791ec1238-1781649224-1781638424&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/cartoonnetwork.jpg" group-title="Kids",Cartoon Network
+http://103.89.248.58:8082/cn/index.m3u8?token=f355b98706321edfc9e48e74fe53774e34165a38-2c6ca480628ad718bdc48c9a92c8a926-1781649242-1781638442&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/discoveryhd.jpg" group-title="Documentary",Discovery HD
+http://103.89.248.50:8082/DISCOVERY-HD/index.m3u8?token=1a6a044a027061eca8e1ed6336b2a12007ff3100-f402be2c3929d7eb1c05def3b288a0af-1781649241-1781638441&remote=no_check_ip
+#EXTINF:-1 tvg-logo="https://tv.bdiptv.net/assets/images/nationalgeo.jpg" group-title="Documentary",Nat Geo Bangla
+http://103.89.248.26:8082/National-geo-graphy-bangla/index.m3u8?token=1fe3292d33312c1bd1cd2edbb477def4d969b292-e409c0b593b08282eda6b1025289c99e-1781649462-1781638662&remote=no_check_ip
