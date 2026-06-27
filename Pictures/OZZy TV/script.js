@@ -1,8 +1,8 @@
 const GITHUB_OWNER = "johnvaibsl-blip";
 const GITHUB_REPO = "Ozzy-TV";
 const GITHUB_BRANCH = "master";
-const PLAYLISTS_FOLDER = "playlists";
-const CACHE_KEY = "ozzytv_playlists_v2";
+const PLAYLISTS_FOLDER = "Pictures/OZZy TV/playlists";
+const CACHE_KEY = "ozzytv_playlists_v3";
 const CACHE_TTL = 5 * 60 * 1000;
 
 let channels = [];
@@ -44,7 +44,8 @@ function setCache(data) {
 }
 
 async function fetchGitHubFolder() {
-    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${PLAYLISTS_FOLDER}?ref=${GITHUB_BRANCH}`;
+    const folderPath = PLAYLISTS_FOLDER.split("/").map(encodeURIComponent).join("/");
+    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${folderPath}?ref=${GITHUB_BRANCH}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error("GitHub API error");
     const files = await res.json();
@@ -52,7 +53,8 @@ async function fetchGitHubFolder() {
 }
 
 async function fetchM3UFromGitHub(filePath) {
-    const rawUrl = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${PLAYLISTS_FOLDER}/${filePath}`;
+    const folderPath = PLAYLISTS_FOLDER.split("/").map(encodeURIComponent).join("/");
+    const rawUrl = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${folderPath}/${encodeURIComponent(filePath)}`;
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), 15000);
     const res = await fetch(rawUrl, { signal: ctrl.signal });
