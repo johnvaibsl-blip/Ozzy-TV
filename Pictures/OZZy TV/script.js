@@ -2,7 +2,7 @@ const GITHUB_OWNER = "johnvaibsl-blip";
 const GITHUB_REPO = "Ozzy-TV";
 const GITHUB_BRANCH = "master";
 const PLAYLISTS_FOLDER = "playlists";
-const CACHE_KEY = "ozzytv_playlists_cache";
+const CACHE_KEY = "ozzytv_playlists_v2";
 const CACHE_TTL = 5 * 60 * 1000;
 
 let channels = [];
