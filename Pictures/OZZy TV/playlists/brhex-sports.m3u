@@ -1,0 +1,41 @@
+#EXTM3U
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/sony%20sports%201%20hd.png" group-title="Sports",SONY SPORTS 1 HD
+https://s2.itcnbd.live/sony-sports-1-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/sony%20sports%202%20hd.png" group-title="Sports",SONY SPORTS 2 HD
+https://s2.itcnbd.live/sony-sports-2-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/Sony%20sports%203.png" group-title="Sports",SONY SPORTS 3
+https://s2.itcnbd.live/sony-sports-3/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/sony%20sports%204.png" group-title="Sports",SONY SPORTS 4
+https://s2.itcnbd.live/sony-sports-4/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/sony%20sports%205%20hd.png" group-title="Sports",SONY SPORTS 5 HD
+https://s2.itcnbd.live/sony-sports-5-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20SELECT%201%20HD1745038777.png" group-title="Sports",STAR SELECT 1 HD
+https://s2.itcnbd.live/star-select-1-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20SPORTS%201%20HD1744991778.png" group-title="Sports",STAR SPORTS 1 HD
+https://s2.itcnbd.live/star-sports-1-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20SPORTS%202%20HD1744991842.png" group-title="Sports",STAR SPORTS 2 HD
+https://s2.itcnbd.live/star-sports-2-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20SPORTS%2031745039893.png" group-title="Sports",STAR SPORTS 3
+https://s2.itcnbd.live/star-sports-3/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20SPORTS%20SELECT%202%20HD1745033722.png" group-title="Sports",STAR SPORTS SELECT 2 HD
+https://s2.itcnbd.live/star-sports-select-2-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/mobile_logo_237244001666780563.png" group-title="Sports",SONY SPORTS TEN 1 HD
+https://server.itcnbd.live/stream/sony_sports_1_hd.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/mobile_logo_093449001666780976.png" group-title="Sports",SONY SPORTS TEN 2 HD
+https://server.itcnbd.live/stream/sony_sports_2_hd.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/mobile_logo_689539001672145843.png" group-title="Sports",SONY SPORTS TEN 5 HD
+https://server.itcnbd.live/stream/sony_sports_5_hd.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/mobile_logo_578686001735197654.png" group-title="Sports",SONY TEN Cricket
+https://server.itcnbd.live/stream/ten_cricket.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/ssc%201%20hd.png" group-title="Sports",SSC SPORTS
+https://s2.itcnbd.live/ssc-sports/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/ssc%205%20hd.png" group-title="Sports",SSC SPORTS 5 HD
+https://s2.itcnbd.live/ssc-sports-5-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/1770378074527.png" group-title="Sports",Flash Guys HD
+https://nomawnoijl.gpcdn.net/akash/flashguys/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/1770380942670.png" group-title="Sports",Fighters
+https://nomawnoijl.gpcdn.net/akash/fighter/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/mobile_logo_975410001725875598.png" group-title="Sports",TOFFEE Sports VIP
+https://server.itcnbd.live/stream/sports_highlights.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/mobile_logo_724353001725875591.png" group-title="Sports",TOFFEE Movies VIP
+https://server.itcnbd.live/stream/toffee_movie.m3u8

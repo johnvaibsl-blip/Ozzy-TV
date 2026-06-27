@@ -1,0 +1,41 @@
+#EXTM3U
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/mobile_logo_443429001678950505.png" group-title="Kids",Cartoon Network HD
+https://server.itcnbd.live/stream/cartoon_network_hd.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/DURANTA%20TV1745043400.png" group-title="Kids",DURANTA TV
+https://s2.itcnbd.live/duranta-tv/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/NICK1745041451.png" group-title="Kids",NICK
+https://s2.itcnbd.live/nick/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/mobile_logo_320294001679201065.png" group-title="Kids",Cartoon Network
+https://server.itcnbd.live/stream/cartoon_network_sd.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/HUNGAMA1745041551.png" group-title="Kids",HUNGAMA
+https://s2.itcnbd.live/hungama/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/mobile_logo_740957001679201029.png" group-title="Kids",Pogo
+https://server.itcnbd.live/stream/pogo_sd.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/mobile_logo_430542001673177743.png" group-title="Kids",Discovery Kids
+https://server.itcnbd.live/stream/discovery_kids.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/1770379573329.png" group-title="Kids",Funny Junior HD
+https://nomawnoijl.gpcdn.net/akash/funnyjunior/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/1770378704923.png" group-title="Kids",Nikki
+https://nomawnoijl.gpcdn.net/akash/nikky/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/1770378874717.png" group-title="Kids",Joy
+https://nomawnoijl.gpcdn.net/akash/joy/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/1770381107924.png" group-title="Kids",Smarty
+https://nomawnoijl.gpcdn.net/akash/smarty/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/1770381398090.png" group-title="Kids",Kids Stars
+https://nomawnoijl.gpcdn.net/akash/kidsstars/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/NICK%20JR1745042397.png" group-title="Kids",NICK JR
+https://s2.itcnbd.live/nick-jr/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/POGO1745041515.png" group-title="Kids",POGO
+https://s2.itcnbd.live/pogo/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/SONIC1745041154.png" group-title="Kids",SONIC
+https://s2.itcnbd.live/sonic/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/SONY%20YAY1745045046.png" group-title="Kids",SONY YAY
+https://s2.itcnbd.live/sony-yay/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/SUPER%20HUNGAMA1745044022.png" group-title="Kids",SUPER HUNGAMA
+https://s2.itcnbd.live/super-hungama/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/BAL%20BHARAT1745041576.png" group-title="Kids",BAL BHARAT
+https://s2.itcnbd.live/bal-bharat/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/1770379038530.png" group-title="Kids",BuddyStar HD
+https://nomawnoijl.gpcdn.net/akash/buddystar/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/31a070024b6516e3738baec70168f0b6" group-title="Kids",Disney JR
+https://tvsen7.aynaott.com/disneyjr/index.m3u8

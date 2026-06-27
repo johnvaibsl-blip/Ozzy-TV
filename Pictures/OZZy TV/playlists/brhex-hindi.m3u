@@ -1,0 +1,41 @@
+#EXTM3U
+#EXTINF:-1 tvg-logo="https://res.cloudinary.com/dd8e9hxyr/image/upload/v1781280030/SET_Max_a6x2ff.webp" group-title="Hindi",SONY MAX HD
+https://stream.ottplus.bd/live/max_hd_abr/live/max_hd_720/chunks.m3u8
+#EXTINF:-1 tvg-logo="https://jiotvimages.cdn.jio.com/dare_images/images/channel/d61eef03af878ccecfe169b26b6686b0.png" group-title="Hindi",Zee Cinema HD
+https://stream.ottplus.bd/live/zee_cinema_hd_abr/live/zee_cinema_hd_720/chunks.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/AND%20PICTURS%20HD1745031440.png" group-title="Hindi",AND PICTURS HD
+https://s2.itcnbd.live/and-picturs-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/COLORS%20CINEPLEX%20HD1745033519.png" group-title="Hindi",COLORS CINEPLEX HD
+https://s2.itcnbd.live/colors-cineplex-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/COLORS%20HD1745031404.png" group-title="Hindi",COLORS HD
+https://s2.itcnbd.live/colors-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/GEO%20NEWS%20HD1745044892.png" group-title="Hindi",GEO NEWS HD
+https://s2.itcnbd.live/geo-news-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/HUM%20TV1745044837.png" group-title="Hindi",HUM TV
+https://s2.itcnbd.live/hum-tv/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/SONY%20ENT%20HD1745033553.png" group-title="Hindi",SONY ENT HD
+https://s2.itcnbd.live/sony-ent-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/SONY%20MAX%20HD1745034069.png" group-title="Hindi",SONY MAX HD
+https://s2.itcnbd.live/sony-max-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20GOLD%202%20HD1745043441.png" group-title="Hindi",STAR GOLD 2 HD
+https://s2.itcnbd.live/star-gold-2-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20GOLD%20HD1745034037.png" group-title="Hindi",STAR GOLD HD
+https://s2.itcnbd.live/star-gold-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20GOLD%20SELECT%20HD1745043508.png" group-title="Hindi",STAR GOLD SELECT HD
+https://s2.itcnbd.live/star-gold-select-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20PLUS%20HD1745038577.png" group-title="Hindi",STAR PLUS HD
+https://s2.itcnbd.live/star-plus-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/ZEE%20CINEMA%20HD1745033602.png" group-title="Hindi",ZEE CINEMA HD
+https://s2.itcnbd.live/zee-cinema-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/ZEE%20TV%20HD1745033383.png" group-title="Hindi",ZEE TV HD
+https://s2.itcnbd.live/zee-tv-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/ZING1745042718.png" group-title="Hindi",ZING
+https://s2.itcnbd.live/zing/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/ZOOM1745040961.png" group-title="Hindi",ZOOM
+https://s2.itcnbd.live/zoom/index.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20BHARAT%20HD1745045255.png" group-title="Hindi",STAR BHARAT HD
+https://s2.itcnbd.live/star-bharat-hd/index.m3u8
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/e92e9e2fb70909f3dd30a8d89e644119" group-title="Hindi",Goldmines Bollywood
+https://tvsen6.aynaott.com/GoldminesBollywood/index.m3u8
+#EXTINF:-1 tvg-logo="https://s3.aynaott.com/storage/e7d8cff366343b850d04a655c6fbf2ff" group-title="Hindi",Assam Talks
+https://tvsen7.aynaott.com/AssamTalks/index.m3u8
