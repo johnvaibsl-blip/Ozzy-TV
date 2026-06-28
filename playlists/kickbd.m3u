@@ -1,17 +1,15 @@
 #EXTM3U
-#EXTINF:-1 tvg-logo="https://pub-3b1599daada84535989ad7d8f7f54bb1.r2.dev/tv-logos/01KVW5DJ3X8TGWR41M517N07QN.webp" group-title="FIFA 2026",KickBD Ultra
+#EXTINF:-1 tvg-logo="https://pub-3b1599daada84535989ad7d8f7f54bb1.r2.dev/tv-logos/01KVW5DJ3X8TGWR41M517N07QN.webp" group-title="FIFA 2026",Ultra 4K
 https://pub-4aa1aaf3896e4dd0923f238800b68845.r2.dev/kickbd-bein4k/main.m3u8
-#EXTINF:-1 tvg-logo="https://pub-3b1599daada84535989ad7d8f7f54bb1.r2.dev/tv-logos/01KVW5DF7XS1FBQD6ZMVG7QF4N.webp" group-title="FIFA 2026",KickBD Edge
+#EXTINF:-1 tvg-logo="https://pub-3b1599daada84535989ad7d8f7f54bb1.r2.dev/tv-logos/01KVW5DF7XS1FBQD6ZMVG7QF4N.webp" group-title="FIFA 2026",Edge Sports
 https://prod-cdn01-live.toffeelive.com/live/FIFA-2026/index.m3u8?edge-cache-token=Expires=1782504063~Starts=1782417663~URLPrefix=aHR0cHM6Ly9wcm9kLWNkbjAxLWxpdmUudG9mZmVlbGl2ZS5jb20~Signature=cLNmYE7EXqsvPz4sGwMdmDeqlxeT4CK4kFtT_3ef9RIQ43wVbnuiVsmGw4fqyFUtcTMnt2zx_t-W4DrJhPieBw
-#EXTINF:-1 tvg-logo="https://pub-3b1599daada84535989ad7d8f7f54bb1.r2.dev/tv-logos/01KVW5DCTQHTV31JA71659C1WP.webp" group-title="FIFA 2026",KickBD Prime 4K
-https://kickbd.org/watch/94
 #EXTINF:-1 tvg-logo="https://pub-3b1599daada84535989ad7d8f7f54bb1.r2.dev/tv-logos/01KVW6ARM0Z6TXYW8Z1M4PSDGJ.jpeg" group-title="FIFA 2026",Fox FHD
-https://kickbd.org/watch/60
+https://kickbd.org/source/fox_fhd_vpn
 #EXTINF:-1 tvg-logo="https://pub-3b1599daada84535989ad7d8f7f54bb1.r2.dev/tv-logos/01KVH1XDB41XV1E72C3FRQV0SZ.png" group-title="FIFA 2026",Fox One
-https://kickbd.org/watch/59
+https://kickbd.org/source/fox_one_1
 #EXTINF:-1 tvg-logo="https://pub-3b1599daada84535989ad7d8f7f54bb1.r2.dev/tv-logos/01KTW4CCSHKC11MWFZA0AYQ4ED.png" group-title="FIFA 2026",D Sports
-https://kickbd.org/watch/49
+https://kickbd.org/source/d_sports_1
 #EXTINF:-1 tvg-logo="https://pub-3b1599daada84535989ad7d8f7f54bb1.r2.dev/tv-logos/01KTQGQ4QVVG3SHQ2844P1ANAD.png" group-title="FIFA 2026",Caze TV
-https://kickbd.org/watch/36
+https://kickbd.org/source/caze_tv_1
 #EXTINF:-1 tvg-logo="https://pub-3b1599daada84535989ad7d8f7f54bb1.r2.dev/01KTF2QNXMSY8TBR9VBK7F9360.png" group-title="FIFA 2026",fubo Sports
-https://kickbd.org/watch/24
+https://kickbd.org/player/fubo-sports
