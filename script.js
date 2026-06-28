@@ -2,7 +2,7 @@ const GITHUB_OWNER = "johnvaibsl-blip";
 const GITHUB_REPO = "Ozzy-TV";
 const GITHUB_BRANCH = "master";
 const PLAYLISTS_FOLDER = "playlists";
-const CACHE_KEY = "ozzytv_playlists_v3";
+const CACHE_KEY = "ozzytv_playlists_v4";
 const CACHE_TTL = 5 * 60 * 1000;
 
 let channels = [];
@@ -47,20 +47,26 @@ async function fetchGitHubFolder() {
     const folderPath = PLAYLISTS_FOLDER.split("/").map(encodeURIComponent).join("/");
     const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${folderPath}?ref=${GITHUB_BRANCH}`;
     const res = await fetch(url);
-    if (!res.ok) throw new Error("GitHub API error");
+    if (!res.ok) throw new Error("GitHub API error " + res.status);
     const files = await res.json();
     return files.filter(f => f.type === "file" && /\.(m3u8?)$/i.test(f.name));
 }
 
 async function fetchM3UFromGitHub(filePath) {
     const folderPath = PLAYLISTS_FOLDER.split("/").map(encodeURIComponent).join("/");
-    const rawUrl = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${folderPath}/${encodeURIComponent(filePath)}`;
+    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${folderPath}/${encodeURIComponent(filePath)}?ref=${GITHUB_BRANCH}`;
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), 15000);
-    const res = await fetch(rawUrl, { signal: ctrl.signal });
+    const res = await fetch(url, { signal: ctrl.signal });
     clearTimeout(t);
-    if (!res.ok) throw new Error("Fetch failed");
-    return await res.text();
+    if (!res.ok) throw new Error("Fetch failed " + res.status);
+    const data = await res.json();
+    if (data.content) return atob(data.content.replace(/\n/g, ""));
+    if (data.download_url) {
+        const r2 = await fetch(data.download_url, { signal: ctrl.signal });
+        return await r2.text();
+    }
+    throw new Error("No content");
 }
 
 async function fetchChannels() {
@@ -77,6 +83,7 @@ async function fetchChannels() {
 
     try {
         const files = await fetchGitHubFolder();
+        console.log("Found files:", files.map(f => f.name));
         const results = await Promise.allSettled(
             files.map(async (f) => {
                 const text = await fetchM3UFromGitHub(f.name);
@@ -88,6 +95,7 @@ async function fetchChannels() {
         );
     } catch (e) {
         console.error("Failed to fetch playlists:", e);
+        toastMsg("Error: " + e.message);
     }
 
     if (channels.length === 0) {
