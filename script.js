@@ -248,7 +248,23 @@ function play(idx) {
 
     if (hls) { hls.destroy(); hls = null; }
 
-    if (current.url.includes(".m3u8") || current.url.includes(".ts")) {
+    video.style.display = "none";
+    const oldIframe = document.getElementById("iframePlayer");
+    if (oldIframe) oldIframe.remove();
+
+    const isHLS = current.url.includes(".m3u8") || current.url.includes(".ts");
+    const isIframe = !isHLS && !current.url.includes(".mp4") && !current.url.includes(".mp3");
+
+    if (isIframe) {
+        const iframe = document.createElement("iframe");
+        iframe.id = "iframePlayer";
+        iframe.src = current.url;
+        iframe.style.cssText = "width:100%;height:100%;border:none;border-radius:8px;position:absolute;top:0;left:0;";
+        video.parentElement.style.position = "relative";
+        video.parentElement.appendChild(iframe);
+        loader.classList.remove("active");
+    } else if (isHLS) {
+        video.style.display = "";
         if (Hls.isSupported()) {
             hls = new Hls({
                 enableWorker: true,
@@ -290,6 +306,7 @@ function play(idx) {
             toastMsg("HLS not supported");
         }
     } else {
+        video.style.display = "";
         video.src = current.url;
         video.onloadedmetadata = () => { loader.classList.remove("active"); video.play().catch(() => {}); };
     }
