@@ -1,9 +1,17 @@
-const GITHUB_OWNER = "johnvaibsl-blip";
-const GITHUB_REPO = "Ozzy-TV";
-const GITHUB_BRANCH = "main";
-const PLAYLISTS_FOLDER = "playlists";
-const CACHE_KEY = "ozzytv_playlists_v4";
-const CACHE_TTL = 5 * 60 * 1000;
+const GITHUB_RAW = "https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/playlists";
+const PLAYLIST_FILES = [
+    "brhex-sports.m3u",
+    "brhex-bangla.m3u",
+    "brhex-news.m3u",
+    "brhex-hindi.m3u",
+    "brhex-kids.m3u",
+    "brhex-movies.m3u",
+    "kickbd.m3u",
+    "live-cricket.m3u",
+    "live-football.m3u"
+];
+const CACHE_KEY = "ozzytv_playlists_v6";
+const CACHE_TTL = 10 * 60 * 1000;
 
 let channels = [];
 let filtered = [];
@@ -43,30 +51,20 @@ function setCache(data) {
     try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (e) {}
 }
 
-async function fetchGitHubFolder() {
-    const folderPath = PLAYLISTS_FOLDER.split("/").map(encodeURIComponent).join("/");
-    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${folderPath}?ref=${GITHUB_BRANCH}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("GitHub API error " + res.status);
-    const files = await res.json();
-    return files.filter(f => f.type === "file" && /\.(m3u8?)$/i.test(f.name));
-}
-
-async function fetchM3UFromGitHub(filePath) {
-    const folderPath = PLAYLISTS_FOLDER.split("/").map(encodeURIComponent).join("/");
-    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${folderPath}/${encodeURIComponent(filePath)}?ref=${GITHUB_BRANCH}`;
+async function fetchM3UFile(filename) {
+    const url = `${GITHUB_RAW}/${encodeURIComponent(filename)}?t=${Date.now()}`;
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), 15000);
-    const res = await fetch(url, { signal: ctrl.signal });
-    clearTimeout(t);
-    if (!res.ok) throw new Error("Fetch failed " + res.status);
-    const data = await res.json();
-    if (data.content) return atob(data.content.replace(/\n/g, ""));
-    if (data.download_url) {
-        const r2 = await fetch(data.download_url, { signal: ctrl.signal });
-        return await r2.text();
+    try {
+        const res = await fetch(url, { signal: ctrl.signal });
+        clearTimeout(t);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return await res.text();
+    } catch (e) {
+        clearTimeout(t);
+        console.warn("Failed to fetch", filename, e.message);
+        return null;
     }
-    throw new Error("No content");
 }
 
 async function fetchChannels() {
@@ -82,13 +80,11 @@ async function fetchChannels() {
     channels = [];
 
     try {
-        const files = await fetchGitHubFolder();
-        console.log("Found files:", files.map(f => f.name));
         const results = await Promise.allSettled(
-            files.map(async (f) => {
-                const text = await fetchM3UFromGitHub(f.name);
-                if (text.includes("#EXTINF")) {
-                    const serverName = f.name.replace(/\.(m3u8?)$/i, "");
+            PLAYLIST_FILES.map(async (filename) => {
+                const text = await fetchM3UFile(filename);
+                if (text && text.includes("#EXTINF")) {
+                    const serverName = filename.replace(/\.(m3u8?)$/i, "");
                     parseM3U(text, serverName);
                 }
             })
@@ -168,7 +164,7 @@ function buildCats() {
     const set = new Set();
     channels.forEach(ch => ch.cats.forEach(c => set.add(c)));
 
-    const order = ["FIFA 2026","FIFA26","Sports","Live Sports","Bangla","Bangladesh","News","Kids","Cartoon","Entertainment","Movies","English","Hindi","Indian Bangla","Drama","Religious","Infotainment","Musics","Music","Documentary","Weather","Other"];
+    const order = ["FIFA 2026","FIFA26","Sports","Live Sports","Live Cricket","FIFA World Cup 2026","Bangla","Bangladesh","News","Kids","Cartoon","Entertainment","Movies","English","Hindi","Indian Bangla","Drama","Religious","Infotainment","Musics","Music","Documentary","Weather","Other"];
     const sorted = [...set].sort((a, b) => {
         const ai = order.indexOf(a), bi = order.indexOf(b);
         if (ai === -1 && bi === -1) return a.localeCompare(b);
