@@ -1,0 +1,7 @@
+#EXTM3U
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20SPORTS%201%20HD1744991778.png" group-title="Live Cricket",PTV Sports
+http://198.195.239.50:8095/ptv/tracks-v1a1/mono.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20SPORTS%201%20HD1744991778.png" group-title="Live Cricket",BTV (Bangladesh)
+http://198.195.239.50:8095/btv/tracks-v1a1/mono.m3u8
+#EXTINF:-1 tvg-logo="https://itcnbd.live/images/STAR%20SPORTS%201%20HD1744991778.png" group-title="Live Cricket",UNTV Sports
+http://198.195.239.50:8095/unt-s/video.m3u8
