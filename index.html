@@ -107,12 +107,16 @@
             </button>
             <div class="player-title" id="playerTitle"></div>
         </div>
-        <div class="player-body">
+        <div class="player-body" id="playerBody">
             <div class="player-container">
                 <video id="video" controls playsinline></video>
                 <div class="player-loader" id="playerLoader"><div class="spin"></div></div>
             </div>
             <div class="streams-panel" id="streamsPanel"></div>
+        </div>
+        <!-- iframe player -->
+        <div class="iframe-player" id="iframePlayer" style="display:none">
+            <iframe id="playerFrame" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture" frameborder="0"></iframe>
         </div>
     </div>
 

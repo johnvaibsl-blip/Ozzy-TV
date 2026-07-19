@@ -141,6 +141,10 @@ a{text-decoration:none;color:inherit;cursor:pointer}
 .stream-chip .stream-type-badge.torrent{background:rgba(229,9,20,.15);color:var(--ac)}
 .stream-chip .stream-type-badge.mp4{background:rgba(0,200,83,.15);color:var(--green)}
 
+/* ═══ IFRAME PLAYER ═══ */
+.iframe-player{flex:1;display:flex;background:#000;min-height:0}
+.iframe-player iframe{width:100%;height:100%;border:none}
+
 /* ═══ TOAST ═══ */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);padding:10px 24px;background:var(--bg4);color:var(--tx);border-radius:8px;font-size:.82rem;border:1px solid var(--brd);z-index:500;transition:.3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.6)}
 .toast.show{transform:translateX(-50%) translateY(0)}

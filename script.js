@@ -388,7 +388,7 @@ function playChannel(id, name, url) {
 function renderStreams(streams, name, type, contentId) {
     $("playerLoader").classList.remove("active");
     if (!streams.length) {
-        $("streamsPanel").innerHTML = '<div class="streams-header">Streams</div><div style="padding:40px 16px;text-align:center;color:var(--tx3);font-size:.85rem">No streams available</div>';
+        $("streamsPanel").innerHTML = '<div class="streams-header">Streams</div><div style="padding:20px 16px;text-align:center;color:var(--tx3);font-size:.85rem">No streams available</div><div style="padding:0 16px 16px;text-align:center"><button class="stream-chip active" onclick="playInIframe(\'' + esc(contentId) + '\', \'' + esc(type) + '\', \'' + esc(name) + '\')" style="width:100%;justify-content:center;background:var(--ac);color:#fff;border-color:var(--ac)">▶ Play via MultiEmbed</button></div>';
         return;
     }
 
@@ -396,6 +396,12 @@ function renderStreams(streams, name, type, contentId) {
     const torrents = streams.filter(s => !s.url && s.infoHash);
 
     let html = `<div class="streams-header">Streams (${playable.length} direct + ${torrents.length} torrent)</div>`;
+
+    html += `<div style="padding:8px 16px;border-bottom:1px solid var(--brd)"><button class="stream-chip" onclick="playInIframe('${esc(contentId)}', '${esc(type)}', '${esc(name)}')" style="width:100%;justify-content:center;background:rgba(229,9,20,.1);border-color:var(--ac);color:var(--ac)">
+        <span class="stream-icon">🌐</span>
+        <div class="stream-info"><div class="stream-name">Play via MultiEmbed (all sources)</div></div>
+    </button></div>`;
+
     html += playable.map((s, i) => {
         const label = s.name || s.title || `Stream ${i + 1}`;
         const url = s.url || "";
@@ -422,7 +428,7 @@ function renderStreams(streams, name, type, contentId) {
 
     if (torrents.length) {
         html += `<div style="padding:8px 16px;font-size:.7rem;color:var(--tx3);border-top:1px solid var(--brd)">
-            ⚠️ ${torrents.length} torrent streams require Stremio or a torrent client to play
+            ⚠️ ${torrents.length} torrent streams require Stremio or a torrent client
         </div>`;
     }
 
@@ -431,8 +437,6 @@ function renderStreams(streams, name, type, contentId) {
     if (playable.length && playable[0].url) {
         startPlayback(playable[0].url, name);
         addContinueWatching(name, type, contentId);
-    } else if (torrents.length) {
-        toast("Torrent streams can only play in Stremio — try direct streams");
     }
 }
 
@@ -630,8 +634,29 @@ function cleanupPlayer() {
     video.load();
 }
 
+// ─── IFRAME PLAYER (MultiEmbed fallback) ─────────────────────────────────
+function getEmbedUrl(tmdbId, type, season, episode) {
+    if (type === "series" && season && episode) {
+        return `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=${season}&e=${episode}`;
+    }
+    return `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1`;
+}
+
+function playInIframe(tmdbId, type, name, season, episode) {
+    $("playerOverlay").style.display = "";
+    $("playerTitle").textContent = name;
+    $("playerBody").style.display = "none";
+    $("iframePlayer").style.display = "";
+    const url = getEmbedUrl(tmdbId, type, season, episode);
+    $("playerFrame").src = url;
+    addContinueWatching(name, type, tmdbId);
+}
+
 function closePlayer() {
     $("playerOverlay").style.display = "none";
+    $("playerBody").style.display = "";
+    $("iframePlayer").style.display = "none";
+    $("playerFrame").src = "";
     cleanupPlayer();
 }
 
