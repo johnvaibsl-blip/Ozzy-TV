@@ -392,8 +392,11 @@ function renderStreams(streams, name, type, contentId) {
         return;
     }
 
-    let html = `<div class="streams-header">Streams (${streams.length})</div>`;
-    html += streams.map((s, i) => {
+    const playable = streams.filter(s => s.url);
+    const torrents = streams.filter(s => !s.url && s.infoHash);
+
+    let html = `<div class="streams-header">Streams (${playable.length} direct + ${torrents.length} torrent)</div>`;
+    html += playable.map((s, i) => {
         const label = s.name || s.title || `Stream ${i + 1}`;
         const url = s.url || "";
         const seeds = s.seeds || 0;
@@ -417,11 +420,19 @@ function renderStreams(streams, name, type, contentId) {
         </button>`;
     }).join("");
 
+    if (torrents.length) {
+        html += `<div style="padding:8px 16px;font-size:.7rem;color:var(--tx3);border-top:1px solid var(--brd)">
+            ⚠️ ${torrents.length} torrent streams require Stremio or a torrent client to play
+        </div>`;
+    }
+
     $("streamsPanel").innerHTML = html;
 
-    if (streams[0] && streams[0].url) {
-        startPlayback(streams[0].url, name);
+    if (playable.length && playable[0].url) {
+        startPlayback(playable[0].url, name);
         addContinueWatching(name, type, contentId);
+    } else if (torrents.length) {
+        toast("Torrent streams can only play in Stremio — try direct streams");
     }
 }
 
