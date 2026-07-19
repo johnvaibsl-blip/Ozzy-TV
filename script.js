@@ -388,21 +388,36 @@ function playChannel(id, name, url) {
 function renderStreams(streams, name, type, contentId) {
     $("playerLoader").classList.remove("active");
     if (!streams.length) {
-        $("streamsPanel").innerHTML = '<div style="color:var(--tx3);font-size:.85rem;padding:8px">No streams available</div>';
+        $("streamsPanel").innerHTML = '<div class="streams-header">Streams</div><div style="padding:40px 16px;text-align:center;color:var(--tx3);font-size:.85rem">No streams available</div>';
         return;
     }
 
-    $("streamsPanel").innerHTML = streams.map((s, i) => {
+    let html = `<div class="streams-header">Streams (${streams.length})</div>`;
+    html += streams.map((s, i) => {
         const label = s.name || s.title || `Stream ${i + 1}`;
         const url = s.url || "";
-        const quality = detectQuality(url, s);
-        const streamType = detectStreamType(url);
+        const seeds = s.seeds || 0;
+        const size = s.size || "";
+        const streamType = detectStreamType(url, s);
+        const typeBadge = streamType === "HLS" ? "hls" : streamType === "Torrent" ? "torrent" : streamType === "MP4" ? "mp4" : "";
+        const icon = streamType === "HLS" ? "📺" : streamType === "Torrent" ? "🧲" : streamType === "MP4" ? "🎬" : "▶️";
+        const seedsHtml = seeds > 0 ? `<span class="seeds">🌱 ${seeds.toLocaleString()}</span>` : "";
+        const sizeHtml = size ? `<span class="size">📦 ${esc(size)}</span>` : "";
+
         return `<button class="stream-chip${i === 0 ? " active" : ""}" onclick="selectStream(this, '${esc(url)}', '${esc(label)}', '${type}', '${esc(contentId)}', '${esc(name)}')">
-            <span class="stream-label">${esc(label)}</span>
-            <span class="stream-quality">${quality}</span>
-            <span class="stream-type">${streamType}</span>
+            <span class="stream-icon">${icon}</span>
+            <div class="stream-info">
+                <div class="stream-name">${esc(label)}</div>
+                <div class="stream-meta">
+                    ${seedsHtml}
+                    ${sizeHtml}
+                    <span class="stream-type-badge ${typeBadge}">${streamType}</span>
+                </div>
+            </div>
         </button>`;
     }).join("");
+
+    $("streamsPanel").innerHTML = html;
 
     if (streams[0] && streams[0].url) {
         startPlayback(streams[0].url, name);
@@ -428,8 +443,9 @@ function detectQuality(url, stream) {
     return "";
 }
 
-function detectStreamType(url) {
+function detectStreamType(url, stream) {
     const u = (url || "").toLowerCase();
+    if (stream && stream.infoHash) return "Torrent";
     if (u.includes("magnet:") || u.includes(".torrent")) return "Torrent";
     if (u.includes(".m3u8") || u.includes("hls") || u.includes("playlist")) return "HLS";
     if (u.includes(".mpd")) return "DASH";
