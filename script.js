@@ -1,298 +1,395 @@
-const GITHUB_RAW = "https://raw.githubusercontent.com/johnvaibsl-blip/Ozzy-TV/main/playlists";
-const PLAYLIST_FILES = [
-    "brhex-sports.m3u",
-    "brhex-bangla.m3u",
-    "brhex-news.m3u",
-    "brhex-hindi.m3u",
-    "brhex-kids.m3u",
-    "brhex-movies.m3u",
-    "kickbd.m3u",
-    "live-cricket.m3u",
-    "live-football.m3u"
-];
-const CACHE_KEY = "ozzytv_playlists_v6";
+const ADDON = "https://ozzytvstremio.vercel.app";
 const CACHE_TTL = 10 * 60 * 1000;
 
-let channels = [];
-let filtered = [];
-let current = null;
-let hls = null;
-let activeCat = "all";
+let state = {
+    section: "home",
+    movies: [],
+    series: [],
+    channels: [],
+    heroItem: null,
+    heroIdx: 0,
+    hls: null,
+    searchTimeout: null,
+    searchResults: []
+};
 
-const video = document.getElementById("video");
-const placeholder = document.getElementById("placeholder");
-const loader = document.getElementById("loader");
-const chList = document.getElementById("chList");
-const cats = document.getElementById("cats");
-const search = document.getElementById("search");
-const npName = document.getElementById("npName");
-const npCat = document.getElementById("npCat");
-const npLogo = document.getElementById("npLogo");
-const channelCount = document.getElementById("channelCount");
-const toast = document.getElementById("toast");
+const $ = id => document.getElementById(id);
 
-init();
-
-function init() {
-    fetchChannels();
-    search.addEventListener("input", () => filterChannels(activeCat));
-    setInterval(fetchChannels, 5 * 60 * 1000);
-}
-
-function getCached() {
-    try {
-        const c = JSON.parse(localStorage.getItem(CACHE_KEY));
-        if (c && Date.now() - c.ts < CACHE_TTL) return c.data;
-    } catch (e) {}
-    return null;
-}
-
-function setCache(data) {
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (e) {}
-}
-
-async function fetchM3UFile(filename) {
-    const url = `${GITHUB_RAW}/${encodeURIComponent(filename)}?t=${Date.now()}`;
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 15000);
-    try {
-        const res = await fetch(url, { signal: ctrl.signal });
-        clearTimeout(t);
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        return await res.text();
-    } catch (e) {
-        clearTimeout(t);
-        console.warn("Failed to fetch", filename, e.message);
-        return null;
-    }
-}
-
-async function fetchChannels() {
-    const cached = getCached();
-    if (cached) {
-        channels = cached;
-        buildCats();
-        filterChannels("all");
-        toastMsg(channels.length + " channels loaded (cached)");
-        return;
-    }
-
-    channels = [];
-
-    try {
-        const results = await Promise.allSettled(
-            PLAYLIST_FILES.map(async (filename) => {
-                const text = await fetchM3UFile(filename);
-                if (text && text.includes("#EXTINF")) {
-                    const serverName = filename.replace(/\.(m3u8?)$/i, "");
-                    parseM3U(text, serverName);
-                }
-            })
-        );
-    } catch (e) {
-        console.error("Failed to fetch playlists:", e);
-        toastMsg("Error: " + e.message);
-    }
-
-    if (channels.length === 0) {
-        chList.innerHTML = '<div class="loading-msg">No channels found.<br>Upload .m3u files to the playlists/ folder in GitHub.</div>';
-        return;
-    }
-
-    const isWorldCup = (ch) => {
-        const name = (ch.name || "").toLowerCase();
-        const cats = (ch.cats || []).map(c => c.toLowerCase());
-        return name.includes("fifa") || name.includes("world cup") || name.includes("worldcup") ||
-               cats.includes("fifa") || cats.includes("fifa world cup") || cats.includes("fifa 2026") || cats.includes("fifa26");
-    };
-
-    channels.sort((a, b) => {
-        const aWC = isWorldCup(a);
-        const bWC = isWorldCup(b);
-        if (aWC && !bWC) return -1;
-        if (!aWC && bWC) return 1;
-        return (b.views || 0) - (a.views || 0);
+// ─── INIT ────────────────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+    loadHome();
+    window.addEventListener("scroll", () => {
+        document.querySelector(".navbar").classList.toggle("scrolled", window.scrollY > 50);
     });
-
-    setCache(channels);
-    buildCats();
-    filterChannels("all");
-    toastMsg(channels.length + " channels loaded");
-}
-
-function parseM3U(text, server) {
-    const lines = text.split("\n");
-    let info = null;
-
-    for (const raw of lines) {
-        const line = raw.trim();
-        if (!line) continue;
-
-        if (line.startsWith("#EXTINF:")) {
-            const nameM = line.match(/,(.+)$/);
-            const logoM = line.match(/tvg-logo="([^"]*)"/);
-            let catsArr = ["Other"];
-
-            const gM = line.match(/group-title="([^"]*)"/);
-            if (gM) {
-                catsArr = gM[1].split(",").map(c => c.trim()).filter(c => c);
-            } else {
-                const gM2 = line.match(/group-title="([^"]*)/);
-                if (gM2) {
-                    const p = gM2[1].split(",");
-                    catsArr = p.length > 1 ? [p[0].trim()] : [gM2[1].trim()];
-                }
-            }
-
-            info = {
-                name: nameM ? nameM[1].trim() : "Unknown",
-                logo: logoM ? logoM[1] : "",
-                cats: catsArr,
-                server: server || "Unknown"
-            };
-        } else if (line.startsWith("http") && info) {
-            const duplicate = channels.find(ch => ch.url === line);
-            if (!duplicate) {
-                channels.push({ ...info, url: line });
-            }
-            info = null;
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") {
+            if ($("playerOverlay").style.display !== "none") closePlayer();
+            else if ($("searchResults").style.display !== "none") hideSearch();
+            else $("globalSearch").blur();
         }
+    });
+});
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────
+function navigate(section) {
+    state.section = section;
+    document.querySelectorAll(".nav-link").forEach(l => l.classList.toggle("active", l.dataset.section === section));
+    $("globalSearch").value = "";
+    hideSearch();
+
+    if (section === "home") {
+        $("homeView").style.display = "";
+        $("browseView").style.display = "none";
+    } else {
+        $("homeView").style.display = "none";
+        $("browseView").style.display = "";
+        loadBrowse(section);
     }
+    window.scrollTo(0, 0);
 }
 
-function buildCats() {
-    const set = new Set();
-    channels.forEach(ch => ch.cats.forEach(c => set.add(c)));
+function goHome() { navigate("home"); }
 
-    const order = ["FIFA 2026","FIFA26","Sports","Live Sports","Live Cricket","FIFA World Cup 2026","Bangla","Bangladesh","News","Kids","Cartoon","Entertainment","Movies","English","Hindi","Indian Bangla","Drama","Religious","Infotainment","Musics","Music","Documentary","Weather","Other"];
-    const sorted = [...set].sort((a, b) => {
-        const ai = order.indexOf(a), bi = order.indexOf(b);
-        if (ai === -1 && bi === -1) return a.localeCompare(b);
-        if (ai === -1) return 1;
-        if (bi === -1) return -1;
-        return ai - bi;
-    });
+// ─── HOME ────────────────────────────────────────────────────────────────
+async function loadHome() {
+    const [movies, series, channels] = await Promise.all([
+        cached("movies", () => fetchJSON("/api/site/movies")),
+        cached("series", () => fetchJSON("/api/site/series")),
+        cached("channels", () => fetchJSON("/api/site/channels"))
+    ]);
+    state.movies = movies;
+    state.series = series;
+    state.channels = channels;
 
-    cats.innerHTML = `<button class="cat-pill active" onclick="filterChannels('all')">All (${channels.length})</button>`;
-    sorted.forEach(c => {
-        const n = channels.filter(ch => ch.cats.includes(c)).length;
-        cats.innerHTML += `<button class="cat-pill" onclick="filterChannels('${c}')">${c} (${n})</button>`;
-    });
+    renderHero(movies, series);
+    renderRows(movies, series, channels);
 }
 
-function filterChannels(cat) {
-    activeCat = cat;
-    const q = search.value.toLowerCase();
-    filtered = channels.filter(ch => {
-        const matchCat = cat === "all" || ch.cats.includes(cat);
-        const matchQ = ch.name.toLowerCase().includes(q);
-        return matchCat && matchQ;
-    });
+function renderHero(movies, series) {
+    const featured = [...movies.filter(m => m.poster && m.background), ...series.filter(s => s.poster && s.background)];
+    if (!featured.length) { $("hero").innerHTML = ""; return; }
 
-    cats.querySelectorAll(".cat-pill").forEach(b => {
-        b.classList.toggle("active",
-            (cat === "all" && b.textContent.startsWith("All")) ||
-            b.textContent.startsWith(cat + " (")
-        );
-    });
+    state.heroItem = featured[0];
+    state.heroIdx = 0;
+    updateHero(featured[0]);
 
-    renderChannels();
+    setInterval(() => {
+        state.heroIdx = (state.heroIdx + 1) % featured.length;
+        updateHero(featured[state.heroIdx]);
+    }, 8000);
 }
 
-function renderChannels() {
-    if (!filtered.length) {
-        chList.innerHTML = '<div class="loading-msg">No channels found</div>';
-        return;
-    }
-    const fallback = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23444"%3E%3Cpath d="M23 7l-7 5 7 5V7z"/%3E%3Crect x="1" y="5" width="15" height="14" rx="2"/%3E%3C/svg%3E';
-    chList.innerHTML = filtered.map(ch => {
-        const idx = channels.indexOf(ch);
-        const isActive = current && current.url === ch.url;
-        const isBroken = ch.working === false;
-        let logo = ch.logo || "";
-        if (logo && !logo.startsWith("http") && !logo.startsWith("data:")) {
-            logo = "";
-        }
-        const initial = ch.name.charAt(0).toUpperCase();
-        const badge = isBroken ? '<div class="ch-badge-offline">Offline</div>' : '';
-        return `<div class="ch-card${isActive ? " active" : ""}${isBroken ? " broken" : ""}" onclick="play(${idx})">
-            <img class="ch-logo" src="${logo}" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="ch-logo-fallback" style="display:none">${initial}</div>
-            ${badge}
-            <div class="ch-info">
-                <div class="ch-name">${ch.name}</div>
-                <div class="ch-cat">${ch.cats.join(", ")}</div>
+function updateHero(item) {
+    state.heroItem = item;
+    const bg = item.background || item.poster || "";
+    const tag = item.type === "series" ? "Series" : "Movie";
+    const isChannel = item.type === "channel";
+    $("hero").innerHTML = `
+        <div class="hero-bg" style="background-image:url('${bg}')"></div>
+        <div class="hero-content">
+            <div class="hero-tag">${tag}</div>
+            <div class="hero-title">${item.name || ""}</div>
+            <div class="hero-desc">${item.description || ""}</div>
+            <div class="hero-btns">
+                <button class="hero-btn hero-btn-play" onclick="playFromHero()">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Play
+                </button>
+                <button class="hero-btn hero-btn-info" onclick="showDetail('${item.id || item.tmdbId}', '${item.type || 'movie'}')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    More Info
+                </button>
             </div>
         </div>`;
+}
+
+function playFromHero() {
+    if (!state.heroItem) return;
+    const item = state.heroItem;
+    if (item.type === "series") playSeries(item.id, item.name);
+    else playMovie(item.tmdbId || item.id, item.name);
+}
+
+function renderRows(movies, series, channels) {
+    const container = $("rowsContainer");
+    let html = "";
+
+    if (movies.length) {
+        html += `<div class="row">
+            <div class="row-header"><span class="row-title">Movies</span><span class="row-more" onclick="navigate('movies')">View All &rarr;</span></div>
+            <div class="row-scroll">${movies.filter(m => m.poster).slice(0, 30).map(m => posterCard(m, 'movie')).join("")}</div>
+        </div>`;
+    }
+
+    if (series.length) {
+        html += `<div class="row">
+            <div class="row-header"><span class="row-title">Series</span><span class="row-more" onclick="navigate('series')">View All &rarr;</span></div>
+            <div class="row-scroll">${series.filter(s => s.poster).slice(0, 30).map(s => posterCard(s, 'series')).join("")}</div>
+        </div>`;
+    }
+
+    const groups = {};
+    channels.forEach(ch => {
+        const g = ch.group || ch.category || "Live TV";
+        if (!groups[g]) groups[g] = [];
+        groups[g].push(ch);
+    });
+
+    const topGroups = Object.entries(groups).sort((a, b) => b[1].length - a[1].length).slice(0, 6);
+    for (const [group, chs] of topGroups) {
+        html += `<div class="row">
+            <div class="row-header"><span class="row-title">${group}</span><span class="row-more" onclick="navigate('live')">View All &rarr;</span></div>
+            <div class="row-scroll">${chs.slice(0, 20).map(ch => channelCard(ch)).join("")}</div>
+        </div>`;
+    }
+
+    container.innerHTML = html;
+}
+
+function posterCard(item, type) {
+    const year = item.releaseInfo || "";
+    return `<div class="card" onclick="play${type === 'series' ? 'Series' : 'Movie'}('${item.id || item.tmdbId}', '${(item.name||'').replace(/'/g,"\\'")}')">
+        <img class="card-poster" src="${item.poster}" alt="${item.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 300%22 fill=%22%23222%22%3E%3Crect width=%22200%22 height=%22300%22/%3E%3Ctext x=%22100%22 y=%22150%22 text-anchor=%22middle%22 fill=%22%23555%22 font-size=%2214%22%3ENo Image%3C/text%3E%3C/svg%3E'">
+        <div class="card-info">
+            <div class="card-title">${item.name || ""}</div>
+            <div class="card-meta">${year}</div>
+        </div>
+    </div>`;
+}
+
+function channelCard(ch) {
+    const initial = (ch.name || "?")[0].toUpperCase();
+    return `<div class="card card-live" onclick="playChannel('${ch.id}', '${(ch.name||'').replace(/'/g,"\\'")}', '${(ch.url||'').replace(/'/g,"\\'")}')">
+        <div class="live-badge">LIVE</div>
+        ${ch.logo ? `<img class="card-poster" src="${ch.logo}" alt="${ch.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">` : `<div class="card-poster" style="display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;color:var(--ac);background:var(--bg3)">${initial}</div>`}
+        <div class="card-info">
+            <div class="card-title">${ch.name}</div>
+            <div class="card-meta">${ch.group || ""}</div>
+        </div>
+    </div>`;
+}
+
+// ─── BROWSE ──────────────────────────────────────────────────────────────
+async function loadBrowse(type) {
+    $("browseTitle").textContent = type === "movies" ? "Movies" : type === "series" ? "Series" : "Live TV";
+    $("browseSearch").value = "";
+    const grid = $("browseGrid");
+    grid.innerHTML = '<div class="grid-loading">Loading...</div>';
+
+    if (type === "live") {
+        const channels = await cached("channels", () => fetchJSON("/api/site/channels"));
+        state.channels = channels;
+        renderBrowseGrid(channels.map(ch => ({...ch, type: "channel", poster: ch.logo})), "channel");
+    } else if (type === "movies") {
+        const movies = await cached("movies", () => fetchJSON("/api/site/movies"));
+        state.movies = movies;
+        renderBrowseGrid(movies, "movie");
+    } else {
+        const series = await cached("series", () => fetchJSON("/api/site/series"));
+        state.series = series;
+        renderBrowseGrid(series, "series");
+    }
+}
+
+function renderBrowseGrid(items, type) {
+    const grid = $("browseGrid");
+    grid.innerHTML = items.map(item => {
+        if (type === "channel") return channelCard(item);
+        return posterCard(item, type);
     }).join("");
 }
 
-function play(idx) {
-    current = channels[idx];
-    placeholder.style.display = "none";
-    loader.classList.add("active");
-    npName.textContent = current.name;
-    npCat.textContent = current.cats[0];
-    let logo = current.logo || "";
-    if (logo && !logo.startsWith("http") && !logo.startsWith("data:")) {
-        logo = "";
+function filterBrowse(query) {
+    const q = query.toLowerCase();
+    const type = state.section;
+    let items;
+    if (type === "live") items = state.channels.filter(ch => ch.name.toLowerCase().includes(q) || (ch.group||"").toLowerCase().includes(q));
+    else if (type === "movies") items = state.movies.filter(m => m.name.toLowerCase().includes(q));
+    else items = state.series.filter(s => s.name.toLowerCase().includes(q));
+    renderBrowseGrid(items, type === "live" ? "channel" : type === "movies" ? "movie" : "series");
+}
+
+// ─── SEARCH ──────────────────────────────────────────────────────────────
+function handleSearch(query) {
+    clearTimeout(state.searchTimeout);
+    if (!query.trim()) { hideSearch(); return; }
+    state.searchTimeout = setTimeout(() => doSearch(query.trim()), 350);
+}
+
+async function doSearch(query) {
+    $("homeView").style.display = "none";
+    $("browseView").style.display = "none";
+    $("searchResults").style.display = "";
+    $("searchGrid").innerHTML = '<div class="grid-loading">Searching...</div>';
+
+    const [movies, series] = await Promise.all([
+        fetchJSON(`/api/site/movies/search?q=${encodeURIComponent(query)}`),
+        fetchJSON(`/api/site/series/search?q=${encodeURIComponent(query)}`)
+    ]);
+
+    let html = "";
+    if (movies.length) html += movies.map(m => posterCard(m, "movie")).join("");
+    if (series.length) html += series.map(s => posterCard(s, "series")).join("");
+    if (!html) html = '<div class="grid-loading">No results found</div>';
+    $("searchGrid").innerHTML = html;
+}
+
+function hideSearch() {
+    $("searchResults").style.display = "none";
+    if (state.section === "home") $("homeView").style.display = "";
+    else $("browseView").style.display = "";
+}
+
+// ─── PLAYER ──────────────────────────────────────────────────────────────
+async function playMovie(tmdbId, name) {
+    const id = String(tmdbId).replace("tmdb:", "");
+    $("playerOverlay").style.display = "";
+    $("playerTitle").textContent = name;
+    $("playerLoader").classList.add("active");
+    $("streamsPanel").innerHTML = "";
+
+    try {
+        const streams = await fetchJSON(`/api/site/movies/${id}/stream`);
+        const list = Array.isArray(streams) ? streams : (streams.streams || []);
+        renderStreams(list, name, "movie");
+    } catch (e) {
+        $("playerLoader").classList.remove("active");
+        toast("Failed to load streams");
     }
-    npLogo.src = logo;
-    channelCount.textContent = (idx + 1) + "/" + channels.length;
+}
 
-    document.querySelectorAll(".ch-card").forEach((c, i) => c.classList.toggle("active", filtered[i] && channels.indexOf(filtered[i]) === idx));
+async function playSeries(imdbId, name) {
+    $("playerOverlay").style.display = "";
+    $("playerTitle").textContent = name;
+    $("playerLoader").classList.add("active");
+    $("streamsPanel").innerHTML = "";
 
-    if (hls) { hls.destroy(); hls = null; }
+    try {
+        const streams = await fetchJSON(`/api/site/series/${imdbId}/stream`);
+        const list = Array.isArray(streams) ? streams : (streams.streams || []);
+        renderStreams(list, name, "series");
+    } catch (e) {
+        $("playerLoader").classList.remove("active");
+        toast("Failed to load streams");
+    }
+}
 
-    if (current.url.includes(".m3u8") || current.url.includes(".ts")) {
+function playChannel(id, name, url) {
+    $("playerOverlay").style.display = "";
+    $("playerTitle").textContent = name;
+    $("playerLoader").classList.add("active");
+    $("streamsPanel").innerHTML = "";
+
+    startPlayback(url, name);
+}
+
+function renderStreams(streams, name, type) {
+    $("playerLoader").classList.remove("active");
+    if (!streams.length) {
+        $("streamsPanel").innerHTML = '<div style="color:var(--tx3);font-size:.85rem;padding:8px">No streams available</div>';
+        return;
+    }
+
+    $("streamsPanel").innerHTML = streams.map((s, i) => {
+        const label = s.name || s.title || `Stream ${i + 1}`;
+        return `<button class="stream-chip${i === 0 ? ' active' : ''}" onclick="selectStream(this, '${(s.url||'').replace(/'/g,"\\'")}', '${label.replace(/'/g,"\\'")}')">${label}</button>`;
+    }).join("");
+
+    if (streams[0] && streams[0].url) {
+        startPlayback(streams[0].url, name);
+    }
+}
+
+function selectStream(btn, url, label) {
+    document.querySelectorAll(".stream-chip").forEach(c => c.classList.remove("active"));
+    btn.classList.add("active");
+    $("playerTitle").textContent = label;
+    startPlayback(url, label);
+}
+
+function startPlayback(url, name) {
+    $("playerLoader").classList.add("active");
+    const video = $("video");
+    if (state.hls) { state.hls.destroy(); state.hls = null; }
+
+    if (url.includes(".m3u8") || url.includes(".ts") || url.includes("hls-proxy") || url.includes("playlist")) {
         if (Hls.isSupported()) {
-            hls = new Hls({
+            state.hls = new Hls({
                 enableWorker: true,
-                lowLatencyMode: false,
                 maxBufferLength: 30,
                 maxMaxBufferLength: 60,
-                backBufferLength: 30,
                 startLevel: -1,
-                maxSeekHole: 10,
-                stretchShortVideoTrack: true,
-                appendErrorMaxRetry: 5,
-                manifestLoadingTimeOut: 15000,
+                manifestLoadingTimeOut: 20000,
                 manifestLoadingMaxRetry: 5,
-                levelLoadingTimeOut: 15000,
-                levelLoadingMaxRetry: 5,
-                fragLoadingTimeOut: 20000,
+                fragLoadingTimeOut: 30000,
                 fragLoadingMaxRetry: 5
             });
-            hls.loadSource(current.url);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, () => { loader.classList.remove("active"); video.play().catch(() => {}); });
-            hls.on(Hls.Events.ERROR, (_, d) => {
+            state.hls.loadSource(url);
+            state.hls.attachMedia(video);
+            state.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                $("playerLoader").classList.remove("active");
+                video.play().catch(() => {});
+            });
+            state.hls.on(Hls.Events.ERROR, (_, d) => {
                 if (d.fatal) {
-                    if (d.type === Hls.ErrorTypes.NETWORK_ERROR) {
-                        hls.startLoad();
-                    } else if (d.type === Hls.ErrorTypes.MEDIA_ERROR) {
-                        hls.recoverMediaError();
-                    } else {
-                        loader.classList.remove("active");
-                        toastMsg("Stream error");
+                    if (d.type === Hls.ErrorTypes.NETWORK_ERROR) state.hls.startLoad();
+                    else if (d.type === Hls.ErrorTypes.MEDIA_ERROR) state.hls.recoverMediaError();
+                    else {
+                        $("playerLoader").classList.remove("active");
+                        toast("Stream error");
                     }
                 }
             });
         } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-            video.src = current.url;
-            video.onloadedmetadata = () => { loader.classList.remove("active"); video.play().catch(() => {}); };
+            video.src = url;
+            video.onloadedmetadata = () => { $("playerLoader").classList.remove("active"); video.play().catch(() => {}); };
         } else {
-            loader.classList.remove("active");
-            toastMsg("HLS not supported");
+            $("playerLoader").classList.remove("active");
+            toast("HLS not supported");
         }
     } else {
-        video.src = current.url;
-        video.onloadedmetadata = () => { loader.classList.remove("active"); video.play().catch(() => {}); };
+        video.src = url;
+        video.onloadedmetadata = () => { $("playerLoader").classList.remove("active"); video.play().catch(() => {}); };
     }
 }
 
-function toastMsg(msg) {
-    toast.textContent = msg;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 3000);
+function closePlayer() {
+    $("playerOverlay").style.display = "none";
+    $("video").pause();
+    $("video").src = "";
+    if (state.hls) { state.hls.destroy(); state.hls = null; }
+}
+
+function showDetail(id, type) {
+    if (type === "series") playSeries(id, state.heroItem?.name || "");
+    else playMovie(id || state.heroItem?.tmdbId, state.heroItem?.name || "");
+}
+
+// ─── UTILS ───────────────────────────────────────────────────────────────
+async function fetchJSON(path) {
+    try {
+        const r = await fetch(ADDON + path);
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return await r.json();
+    } catch (e) {
+        console.error("Fetch error:", path, e.message);
+        return [];
+    }
+}
+
+async function cached(key, fn) {
+    try {
+        const c = JSON.parse(sessionStorage.getItem("ozzy_" + key));
+        if (c && Date.now() - c.ts < CACHE_TTL) return c.data;
+    } catch (_) {}
+    const data = await fn();
+    try { sessionStorage.setItem("ozzy_" + key, JSON.stringify({ ts: Date.now(), data })); } catch (_) {}
+    return data;
+}
+
+function toast(msg) {
+    const t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 3000);
 }
