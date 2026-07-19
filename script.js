@@ -392,28 +392,46 @@ function renderStreams(streams, name, type, contentId) {
         return;
     }
 
-    const playable = streams.filter(s => s.url);
-    const torrents = streams.filter(s => !s.url && s.infoHash);
+    const embeds = streams.filter(s => s.externalUrl);
+    const playable = streams.filter(s => s.url && !s.externalUrl);
+    const torrents = streams.filter(s => !s.url && !s.externalUrl && s.infoHash);
 
-    let html = `<div class="streams-header">Streams (${playable.length} direct + ${torrents.length} torrent)</div>`;
+    let html = `<div class="streams-header">Streams (${embeds.length} embed + ${playable.length} direct + ${torrents.length} torrent)</div>`;
 
+    // MultiEmbed fallback button
     html += `<div style="padding:8px 16px;border-bottom:1px solid var(--brd)"><button class="stream-chip" onclick="playInIframe('${esc(contentId)}', '${esc(type)}', '${esc(name)}')" style="width:100%;justify-content:center;background:rgba(229,9,20,.1);border-color:var(--ac);color:var(--ac)">
         <span class="stream-icon">🌐</span>
         <div class="stream-info"><div class="stream-name">Play via MultiEmbed (all sources)</div></div>
     </button></div>`;
 
+    // Embed streams (iframe playback — PRIMARY method)
+    html += embeds.map((s, i) => {
+        const label = s.name || s.title || `Embed ${i + 1}`;
+        const icon = '🌐';
+        return `<button class="stream-chip${i === 0 && !playable.length ? ' active' : ''}" onclick="playEmbedUrl('${esc(s.externalUrl)}', '${esc(label)}', '${esc(name)}')">
+            <span class="stream-icon">${icon}</span>
+            <div class="stream-info">
+                <div class="stream-name">${esc(label)}</div>
+                <div class="stream-meta">
+                    <span class="stream-type-badge">iframe</span>
+                </div>
+            </div>
+        </button>`;
+    }).join("");
+
+    // Direct streams (m3u8, mp4, etc.)
     html += playable.map((s, i) => {
         const label = s.name || s.title || `Stream ${i + 1}`;
         const url = s.url || "";
         const seeds = s.seeds || 0;
         const size = s.size || "";
         const streamType = detectStreamType(url, s);
-        const typeBadge = streamType === "HLS" ? "hls" : streamType === "Torrent" ? "torrent" : streamType === "MP4" ? "mp4" : "";
-        const icon = streamType === "HLS" ? "📺" : streamType === "Torrent" ? "🧲" : streamType === "MP4" ? "🎬" : "▶️";
+        const typeBadge = streamType === "HLS" ? "hls" : streamType === "MP4" ? "mp4" : "";
+        const icon = streamType === "HLS" ? "📺" : streamType === "MP4" ? "🎬" : "▶️";
         const seedsHtml = seeds > 0 ? `<span class="seeds">🌱 ${seeds.toLocaleString()}</span>` : "";
         const sizeHtml = size ? `<span class="size">📦 ${esc(size)}</span>` : "";
 
-        return `<button class="stream-chip${i === 0 ? " active" : ""}" onclick="selectStream(this, '${esc(url)}', '${esc(label)}', '${type}', '${esc(contentId)}', '${esc(name)}')">
+        return `<button class="stream-chip" onclick="selectStream(this, '${esc(url)}', '${esc(label)}', '${type}', '${esc(contentId)}', '${esc(name)}')">
             <span class="stream-icon">${icon}</span>
             <div class="stream-info">
                 <div class="stream-name">${esc(label)}</div>
@@ -434,7 +452,10 @@ function renderStreams(streams, name, type, contentId) {
 
     $("streamsPanel").innerHTML = html;
 
-    if (playable.length && playable[0].url) {
+    // Auto-play: embed first, then direct streams
+    if (embeds.length && embeds[0].externalUrl) {
+        playEmbedUrl(embeds[0].externalUrl, embeds[0].name || 'Embed', name);
+    } else if (playable.length && playable[0].url) {
         startPlayback(playable[0].url, name);
         addContinueWatching(name, type, contentId);
     }
@@ -650,6 +671,15 @@ function playInIframe(tmdbId, type, name, season, episode) {
     const url = getEmbedUrl(tmdbId, type, season, episode);
     $("playerFrame").src = url;
     addContinueWatching(name, type, tmdbId);
+}
+
+function playEmbedUrl(url, label, name) {
+    $("playerOverlay").style.display = "";
+    $("playerTitle").textContent = label || name;
+    $("playerBody").style.display = "none";
+    $("iframePlayer").style.display = "";
+    $("playerFrame").src = url;
+    addContinueWatching(name, "", url);
 }
 
 function closePlayer() {
