@@ -382,7 +382,14 @@ function playChannel(id, name, url) {
     $("playerTitle").textContent = name;
     $("playerLoader").classList.add("active");
     $("streamsPanel").innerHTML = "";
-    startPlayback(url, name);
+    if (url.includes("logic.icelanders.st/embed") || url.includes("multiembed.mov") || url.includes("2embed.cc") || url.includes("vidlink.pro") || url.includes("videasy.net")) {
+        $("playerLoader").classList.remove("active");
+        $("playerBody").style.display = "none";
+        $("iframePlayer").style.display = "";
+        $("playerFrame").src = url;
+    } else {
+        startPlayback(url, name);
+    }
 }
 
 function renderStreams(streams, name, type, contentId) {
