@@ -214,7 +214,7 @@ function channelCard(ch) {
     const pinned = ch.pinned ? " pinned" : "";
     return `<div class="card card-live${pinned}" onclick="playChannel('${esc(ch.id)}', '${esc(ch.name)}', '${esc(ch.url)}')">
         <div class="live-badge">LIVE</div>
-        <button class="pin-btn${pinned}" onclick="event.stopPropagation();togglePin('${esc(ch.id)}')" title="${ch.pinned ? "Unpin" : "Pin"}">
+        <button class="pin-btn${pinned}" onclick="event.stopPropagation();togglePin('${esc(ch.id)}', '${esc(ch.name)}')" title="${ch.pinned ? "Unpin" : "Pin"}">
             <svg viewBox="0 0 24 24" fill="${ch.pinned ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
         </button>
         ${ch.logo ? `<img class="card-poster" src="${ch.logo}" alt="${esc(ch.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">` : `<div class="card-poster" style="display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;color:var(--ac);background:var(--bg4)">${initial}</div>`}
@@ -225,13 +225,13 @@ function channelCard(ch) {
     </div>`;
 }
 
-async function togglePin(id) {
+async function togglePin(id, name) {
     try {
-        const res = await fetch(`${ADDON}/api/library/${encodeURIComponent(id)}/pin`, { method: "POST" });
+        const res = await fetch(`${ADDON}/api/library/${encodeURIComponent(id)}/pin?channel=${encodeURIComponent(name)}`, { method: "POST" });
         const data = await res.json();
         if (data.success) {
             toast(data.pinned ? "Pinned" : "Unpinned");
-            state.channels = state.channels.map(ch => ch.id === id ? { ...ch, pinned: data.pinned } : ch);
+            state.channels = state.channels.map(ch => ch.name === name ? { ...ch, pinned: data.pinned } : ch);
             if ($("browseView").style.display !== "none") renderBrowseGrid(state.channels.map(ch => ({ ...ch, type: "channel", poster: ch.logo })), "channel");
             else loadHome();
         }
