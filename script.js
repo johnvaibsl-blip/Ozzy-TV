@@ -456,6 +456,14 @@ function detectStreamType(url, stream) {
 }
 
 // ─── PLAYBACK ENGINE ─────────────────────────────────────────────────────
+function proxyUrl(url) {
+    if (!url) return url;
+    if (url.includes("ozzytvstremio.vercel.app/api/proxy")) return url;
+    if (url.includes("magnet:") || url.includes(".torrent") || url.includes("infoHash")) return url;
+    if (url.startsWith("blob:") || url.startsWith("data:")) return url;
+    return ADDON + "/api/proxy-us?url=" + encodeURIComponent(url);
+}
+
 function startPlayback(url, name) {
     $("playerLoader").classList.add("active");
     const video = $("video");
@@ -467,17 +475,19 @@ function startPlayback(url, name) {
         return;
     }
 
-    if (url.includes(".m3u8") || url.includes(".ts") || url.includes("hls-proxy") || url.includes("playlist")) {
-        playHLS(url, video);
+    const proxied = proxyUrl(url);
+
+    if (url.includes(".m3u8") || url.includes(".ts") || url.includes("hls-proxy") || url.includes("playlist") || url.includes("m3u8")) {
+        playHLS(proxied, video);
         return;
     }
 
     if (url.includes(".mpd")) {
-        playDASH(url, video);
+        playDASH(proxied, video);
         return;
     }
 
-    playDirect(url, video);
+    playDirect(proxied, video);
 }
 
 function playHLS(url, video) {
