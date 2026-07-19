@@ -80,6 +80,11 @@ a{text-decoration:none;color:inherit;cursor:pointer}
 .card-meta{font-size:.65rem;color:var(--tx2);margin-top:2px}
 .card-live{position:relative}
 .card-live .live-badge{position:absolute;top:6px;left:6px;background:var(--ac);color:#fff;font-size:.55rem;font-weight:700;padding:2px 6px;border-radius:3px;z-index:1}
+.card-live .pin-btn{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.6);border:none;color:var(--tx3);width:28px;height:28px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;z-index:1;opacity:0}
+.card-live:hover .pin-btn{opacity:1}
+.card-live .pin-btn:hover{background:var(--ac);color:#fff}
+.card-live .pin-btn.pinned{opacity:1;color:var(--ac);background:rgba(229,9,20,.2)}
+.card-live.pinned{border:1px solid var(--ac)}
 
 /* ═══ BROWSE ═══ */
 .browse-view{padding:20px 32px 40px}

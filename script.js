@@ -170,6 +170,14 @@ function renderRows(movies, series, channels) {
         </div>`;
     }
 
+    const pinned = channels.filter(ch => ch.pinned);
+    if (pinned.length) {
+        html += `<div class="row">
+            <div class="row-header"><span class="row-title">Pinned</span><span class="row-more" onclick="navigate('live')">View All &rarr;</span></div>
+            <div class="row-scroll">${pinned.map(ch => channelCard(ch)).join("")}</div>
+        </div>`;
+    }
+
     const groups = {};
     channels.forEach(ch => {
         const g = ch.group || ch.category || "Live TV";
@@ -203,14 +211,33 @@ function posterCard(item, type) {
 
 function channelCard(ch) {
     const initial = (ch.name || "?")[0].toUpperCase();
-    return `<div class="card card-live" onclick="playChannel('${esc(ch.id)}', '${esc(ch.name)}', '${esc(ch.url)}')">
+    const pinned = ch.pinned ? " pinned" : "";
+    return `<div class="card card-live${pinned}" onclick="playChannel('${esc(ch.id)}', '${esc(ch.name)}', '${esc(ch.url)}')">
         <div class="live-badge">LIVE</div>
+        <button class="pin-btn${pinned}" onclick="event.stopPropagation();togglePin('${esc(ch.id)}')" title="${ch.pinned ? "Unpin" : "Pin"}">
+            <svg viewBox="0 0 24 24" fill="${ch.pinned ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        </button>
         ${ch.logo ? `<img class="card-poster" src="${ch.logo}" alt="${esc(ch.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">` : `<div class="card-poster" style="display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;color:var(--ac);background:var(--bg4)">${initial}</div>`}
         <div class="card-info">
             <div class="card-title">${esc(ch.name)}</div>
             <div class="card-meta">${esc(ch.group || "")}</div>
         </div>
     </div>`;
+}
+
+async function togglePin(id) {
+    try {
+        const res = await fetch(`${ADDON}/api/library/${encodeURIComponent(id)}/pin`, { method: "POST" });
+        const data = await res.json();
+        if (data.success) {
+            toast(data.pinned ? "Pinned" : "Unpinned");
+            state.channels = state.channels.map(ch => ch.id === id ? { ...ch, pinned: data.pinned } : ch);
+            if ($("browseView").style.display !== "none") renderBrowseGrid(state.channels.map(ch => ({ ...ch, type: "channel", poster: ch.logo })), "channel");
+            else loadHome();
+        }
+    } catch (e) {
+        toast("Pin failed");
+    }
 }
 
 // ─── DETAIL MODAL ────────────────────────────────────────────────────────
@@ -292,7 +319,8 @@ async function loadBrowse(type) {
     if (type === "live") {
         const channels = await cached("channels", () => fetchJSON("/api/site/channels"));
         state.channels = channels;
-        renderBrowseGrid(channels.map(ch => ({ ...ch, type: "channel", poster: ch.logo })), "channel");
+        const sorted = [...channels].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+        renderBrowseGrid(sorted.map(ch => ({ ...ch, type: "channel", poster: ch.logo })), "channel");
     } else if (type === "movies") {
         const movies = await cached("movies", () => fetchJSON("/api/site/movies"));
         state.movies = movies;
